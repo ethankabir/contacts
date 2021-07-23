@@ -10,7 +10,7 @@ function save()
 
 
     var name  = $('#name').val().trim();
-    var email = $('#email').val().trim();
+    var email = $('#email').val().trim().toLowerCase();
     var phone = $('#phone').val().trim();
 
     // Make sure name has at least two char
@@ -39,6 +39,18 @@ function save()
         return false;
     }
 
+    // Data is valid
+
+    var record = {
+
+        name : name,
+        email : email,
+        phone : phone
+
+    }
+
+    var contactDB = new ContactDB();
+    contactDB.write(record)
 
     console.group("user data");
     console.log("Name : " + name + " len=" + name.length);
@@ -67,8 +79,9 @@ function hideContactForm()
 
 
 
-$(document).ready(function(){
 
+
+$(document).ready(function(){
 
     console.log("Document loaded");
 
@@ -80,12 +93,11 @@ $(document).ready(function(){
         $('#phone').val('916 555-5555');
     }
 
-
 })
 
 function validateName(name) {
 
-    const re = /[a-z]+)/i;
+    const re = /[a-z]+/i;
     return re.test(name);
 }
 
