@@ -20,6 +20,8 @@
         <script src="contact.js"></script>
         <script src="contactDB.js"></script>
 
+        <link rel="stylesheet" href="contact.css">
+
     </head>
 <body>
     <div class="container-fluid">
@@ -36,11 +38,16 @@
                 <form>
                     <div class="form-group">
                       <label for="search">Search by keywords</label>
-                      <input type="text" class="form-control" id="search" placeholder="Example: name, email, phone">
+                      <input type="text" class="form-control" id="search" name="search" placeholder="Example: name, email, phone">
                     </div>
                
          
-                    <button type="submit" class="btn btn-default">Search</button>
+                    <button id="search_btn" class="btn btn-default">Search</button>
+
+                    <div id="results" class="hide">
+                       Total contacts matched: <span id="result_count"></span>
+                       <div id="result_list"></div>
+                    </div>
                   </form>
             </div>
           </div>

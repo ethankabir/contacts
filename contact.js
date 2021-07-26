@@ -4,11 +4,81 @@ const DEVELOPER_MODE = true;
 $(document).on('click', '#new_contact', showContactForm);
 $(document).on('click', '#cancel_btn', hideContactForm);
 $(document).on('click', '#save_btn', save);
+$(document).on('click', '#search_btn', search);
+
+
+function search()
+{
+    var keyword = $('#search').val();
+
+    if (keyword.length < 3)
+    {
+        alert('Sorry, you must enter a keyword with at least three characters or numbers.');
+        return false;
+    }
+   
+    var contactDB = new ContactDB();
+
+    // If contact database is not loaded
+    if (!contactDB.load())
+    {
+        alert('Sorry, database could not be loaded.');
+        return false
+    }
+
+    // Search for the keyword
+    var results = contactDB.search(keyword)
+
+    var matched = Object.keys(results).length
+
+    if (!matched)
+    {
+        alert('Sorry, no results found for ' + keyword);
+        return false
+    }
+
+    
+    var resultBox = $('#results').removeClass('hide')
+
+    $('#result_count').html(matched)
+
+    var tableDiv = $('#result_list')
+
+    var resultTable = '<table class="table">'
+
+    for(email in results)
+    {
+        var curRecord = results[email]
+
+        var newRow = '<tr>'
+        var columns = ''
+
+        for(field in curRecord) {
+
+          value = curRecord[field]
+          columns += '<td>' + value + '</td>'
+    
+        }
+
+        newRow += columns
+        newRow += '</tr>'
+        resultTable += newRow
+
+    }
+
+
+    resultTable += '</table>';
+
+    tableDiv.html(resultTable)
+    resultBox.show();
+
+    return false
+
+}
+
 
 function save()
 {
-
-
     var name  = $('#name').val().trim();
     var email = $('#email').val().trim().toLowerCase();
     var phone = $('#phone').val().trim();
@@ -66,7 +136,6 @@ function showContactForm()
 {
     $('#search_box').hide();
     $('#contact_editor').removeClass('hide').show();
-
 }
 
 
@@ -78,19 +147,18 @@ function hideContactForm()
 }
 
 
-
-
-
 $(document).ready(function(){
 
     console.log("Document loaded");
 
     if (DEVELOPER_MODE)
     {
-        var random = Math.floor(Math.random() * 100);
-        $('#name').val('Joe Smith');
-        $('#email').val('joe' + random + '@example.com');
-        $('#phone').val('916 555-5555');
+        var random = Math.floor(Math.random() * 100)
+        $('#name').val('Joe Smith')
+        $('#email').val('joe' + random + '@example.com')
+        $('#phone').val('916 555-5555')
+        // $('#search').val('kabir@evoknow.com')
+        $('#search').val('Smith')
     }
 
 })
